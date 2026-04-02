@@ -10,6 +10,8 @@ Track your GitHub Copilot token consumption and estimated cost in real-time, rig
 
 A persistent status bar item shows your live token count and estimated cost for the current session. Resets automatically when idle for 5+ minutes.
 
+![Status Bar](images/statusbar.png)
+
 ### Interactive Dashboard
 
 Open the dashboard from the activity bar or via command palette. Visualize your usage with:
@@ -21,6 +23,8 @@ Open the dashboard from the activity bar or via command palette. Visualize your 
 - **Jensen Benchmark** -- a progress bar tracking your yearly spending against the $250K target
 
 Toggle between 7-day and 30-day views. All data is stored locally in VS Code's globalState.
+
+![Dashboard](images/dashboard.png)
 
 ### Multi-Window Support
 
