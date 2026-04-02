@@ -1,0 +1,142 @@
+{
+  "name": "eatingtoken",
+  "displayName": "Eating Token - Copilot Token Tracker",
+  "description": "Track your GitHub Copilot token consumption and estimated cost in real-time. Know exactly how many tokens you're eating.",
+  "version": "0.2.0",
+  "publisher": "manishsatwani",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "copilot",
+    "tokens",
+    "usage",
+    "cost",
+    "metrics",
+    "ai",
+    "tracking"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manishsatwani/eatingtoken"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "eatingtoken.showDashboard",
+        "title": "Eating Token: Show Dashboard"
+      },
+      {
+        "command": "eatingtoken.resetSession",
+        "title": "Eating Token: Reset Session Stats"
+      },
+      {
+        "command": "eatingtoken.exportData",
+        "title": "Eating Token: Export Usage Data"
+      }
+    ],
+    "configuration": {
+      "title": "Eating Token",
+      "properties": {
+        "eatingtoken.costModel": {
+          "type": "string",
+          "default": "gpt-4o",
+          "enum": [
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-4.1",
+            "gpt-4",
+            "claude-opus-4.6",
+            "claude-sonnet-4",
+            "claude-sonnet-3.5"
+          ],
+          "description": "Model pricing to use for cost estimation. Since Copilot's internal pricing isn't public, this estimates what the equivalent API cost would be."
+        },
+        "eatingtoken.contextMultiplier": {
+          "type": "number",
+          "default": 1.3,
+          "description": "Multiplier applied to visible context to estimate Copilot's full prompt (includes neighboring tabs, file paths, etc.)"
+        },
+        "eatingtoken.showInStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show token consumption in the status bar"
+        },
+        "eatingtoken.statusBarFormat": {
+          "type": "string",
+          "default": "tokens-and-cost",
+          "enum": [
+            "tokens-only",
+            "cost-only",
+            "tokens-and-cost"
+          ],
+          "description": "What to display in the status bar"
+        },
+        "eatingtoken.trackCompletions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Track inline completion acceptances (heuristic-based)"
+        },
+        "eatingtoken.yearlyTarget": {
+          "type": "number",
+          "default": 250000,
+          "description": "Yearly spending target in USD (inspired by Jensen's $250K benchmark)"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "eatingtoken",
+          "title": "Eating Token",
+          "icon": "images/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "eatingtoken": [
+        {
+          "id": "eatingtoken.dashboardView",
+          "name": "Dashboard",
+          "type": "webview"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "eatingtoken.acceptSuggestion",
+        "key": "tab",
+        "when": "inlineSuggestionVisible && !editorTabMovesFocus && config.eatingtoken.trackCompletions"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap && cp node_modules/chart.js/dist/chart.umd.min.js dist/chart.umd.min.js",
+    "watch": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
+    "lint": "eslint src --ext ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.20.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.0",
+    "vitest": "^4.1.2"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.1",
+    "gpt-tokenizer": "^2.8.0"
+  }
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="16" fill="#1e1e1e"/>
+  <text x="64" y="78" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="#ff6b35" text-anchor="middle">ET</text>
+  <circle cx="98" cy="32" r="12" fill="#ff6b35" opacity="0.8"/>
+  <path d="M93 28 l5 4 l5-4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M93 32 l5 4 l5-4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

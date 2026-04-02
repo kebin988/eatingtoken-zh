@@ -1,0 +1,9 @@
+.vscode/**
+src/**
+node_modules/**
+*.ts
+!dist/**
+tsconfig.json
+vitest.config.ts
+.gitignore
+DEVLOG.md
