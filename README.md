@@ -10,7 +10,7 @@
 
 状态栏会持续显示当前会话的 Token 计数和预估费用。空闲 5 分钟以上自动重置。
 
-![状态栏](https://raw.githubusercontent.com/manishsat/eatingtoken/main/images/statusbar.png)
+![状态栏](images/statusbar.png)
 
 ### 交互式仪表盘
 
@@ -20,11 +20,11 @@
 - **费用趋势线** —— 追踪 7 天或 30 天内的支出
 - **语言分布** —— 查看哪些编程语言消耗最多 Token
 - **模型分布** —— 环形图展示各模型（GPT-4o、Claude Sonnet 等）的用量
-- **黄仁勋基准** —— 进度条追踪你的年度支出与 $250K 目标的差距
+- **黄仁勋基准** —— 进度条追踪你的年度支出与 ¥181.25 万目标的差距
 
 支持在 7 天和 30 天视图之间切换。所有数据存储在 VS Code 的 globalState 中。
 
-![仪表盘](https://raw.githubusercontent.com/manishsat/eatingtoken/main/images/dashboard.png)
+![仪表盘](images/dashboard.png)
 
 ### 多窗口支持
 
@@ -45,11 +45,18 @@ Eating Token 使用多个数据源以尽可能准确地捕获 Copilot 活动：
 
 ## 安装
 
+### 直接下载安装（推荐）
+
+1. 从 [GitHub 仓库](https://github.com/kebin988/eatingtoken-zh) 下载 `eatingtoken-zh-0.2.2.vsix`
+2. 打开 VS Code
+3. `Ctrl+Shift+P` / `Cmd+Shift+P` -> **扩展: 从 VSIX 安装...**
+4. 选择下载的 `.vsix` 文件
+
 ### 从源码安装（本地 .vsix）
 
 ```bash
-git clone https://github.com/manishsat/eatingtoken.git
-cd eatingtoken
+git clone https://github.com/kebin988/eatingtoken-zh.git
+cd eatingtoken-zh
 npm install
 npm run build
 npx @vscode/vsce package
@@ -59,7 +66,7 @@ npx @vscode/vsce package
 
 1. 打开 VS Code
 2. `Ctrl+Shift+P` / `Cmd+Shift+P` -> **扩展: 从 VSIX 安装...**
-3. 选择 `eatingtoken-*.vsix` 文件
+3. 选择 `eatingtoken-zh-*.vsix` 文件
 
 ### 前置条件
 
@@ -85,21 +92,21 @@ npx @vscode/vsce package
 | `eatingtoken.showInStatusBar` | `true` | 在状态栏显示 Token 计数 |
 | `eatingtoken.statusBarFormat` | `tokens-and-cost` | 显示格式：`tokens-only`、`cost-only` 或 `tokens-and-cost` |
 | `eatingtoken.trackCompletions` | `true` | 追踪内联补全接受情况 |
-| `eatingtoken.yearlyTarget` | `250000` | 年度消费目标（美元） |
+| `eatingtoken.yearlyTarget` | `1812500` | 年度消费目标（人民币元），默认 181.25 万元（约 25 万美元） |
 
 ### 支持的费用模型
 
-由于 GitHub Copilot 未公开其内部 Token 定价，费用按等价 API 费率估算：
+由于 GitHub Copilot 未公开其内部 Token 定价，费用按等价 API 费率估算（已按 1 USD = 7.25 CNY 换算为人民币）：
 
 | 模型 | 输入（每百万 Token） | 输出（每百万 Token） |
 |------|---------------------|---------------------|
-| gpt-4o | $2.50 | $10.00 |
-| gpt-4o-mini | $0.15 | $0.60 |
-| gpt-4.1 | $2.00 | $8.00 |
-| gpt-4 | $30.00 | $60.00 |
-| claude-opus-4.6 | $15.00 | $75.00 |
-| claude-sonnet-4 | $3.00 | $15.00 |
-| claude-sonnet-3.5 | $3.00 | $15.00 |
+| gpt-4o | ¥18.13 | ¥72.50 |
+| gpt-4o-mini | ¥1.09 | ¥4.35 |
+| gpt-4.1 | ¥14.50 | ¥58.00 |
+| gpt-4 | ¥217.50 | ¥435.00 |
+| claude-opus-4.6 | ¥108.75 | ¥543.75 |
+| claude-sonnet-4 | ¥21.75 | ¥108.75 |
+| claude-sonnet-3.5 | ¥21.75 | ¥108.75 |
 
 ## 工作原理
 
@@ -146,7 +153,7 @@ npx @vscode/vsce package
 ## 限制
 
 - **无法直接访问 Copilot API**：VS Code 不暴露 API 来观察其他扩展的内联补全或拦截 Copilot Chat 消息。补全追踪器和 Chat 追踪器的 Token 计数是启发式估算。
-- **费用估算为近似值**：Copilot 的实际内部定价未公开。显示的费用基于等价的 OpenAI/Anthropic API 定价。
+- **费用估算为近似值**：Copilot 的实际内部定价未公开。显示的费用基于等价的 OpenAI/Anthropic API 定价，并按 7.25 汇率换算为人民币。
 - **跨窗口竞态条件**：虽然扩展使用先合并后写入并立即保存的策略，但理论上在多个 VS Code 实例同时写入 globalState 时存在微小的竞态窗口。
 
 ## 许可证
@@ -161,6 +168,9 @@ MIT
 2. 创建功能分支
 3. 运行 `npm test` 确保所有测试通过
 4. 提交 Pull Request
+
+---
+
 # Eating Token - Copilot Token Tracker
 
 > Know exactly how many tokens you're eating.
@@ -173,7 +183,7 @@ Track your GitHub Copilot token consumption and estimated cost in real-time, rig
 
 A persistent status bar item shows your live token count and estimated cost for the current session. Resets automatically when idle for 5+ minutes.
 
-![Status Bar](https://raw.githubusercontent.com/manishsat/eatingtoken/main/images/statusbar.png)
+![Status Bar](images/statusbar.png)
 
 ### Interactive Dashboard
 
@@ -183,11 +193,11 @@ Open the dashboard from the activity bar or via command palette. Visualize your 
 - **Cost trend lines** -- track your spending over 7 or 30 days
 - **Language breakdown** -- see which languages consume the most tokens
 - **Model breakdown** -- donut chart showing usage per model (GPT-4o, Claude Sonnet, etc.)
-- **Jensen Benchmark** -- a progress bar tracking your yearly spending against the $250K target
+- **Jensen Benchmark** -- a progress bar tracking your yearly spending against the ¥1,812,500 target
 
 Toggle between 7-day and 30-day views. All data is stored locally in VS Code's globalState.
 
-![Dashboard](https://raw.githubusercontent.com/manishsat/eatingtoken/main/images/dashboard.png)
+![Dashboard](images/dashboard.png)
 
 ### Multi-Window Support
 
@@ -208,11 +218,18 @@ Session Watcher events take priority over Log Watcher events via deduplication, 
 
 ## Installation
 
+### Direct Download (Recommended)
+
+1. Download `eatingtoken-zh-0.2.2.vsix` from the [GitHub repository](https://github.com/kebin988/eatingtoken-zh)
+2. Open VS Code
+3. `Ctrl+Shift+P` / `Cmd+Shift+P` -> **Extensions: Install from VSIX...**
+4. Select the downloaded `.vsix` file
+
 ### From Source (Local .vsix)
 
 ```bash
-git clone https://github.com/manishsat/eatingtoken.git
-cd eatingtoken
+git clone https://github.com/kebin988/eatingtoken-zh.git
+cd eatingtoken-zh
 npm install
 npm run build
 npx @vscode/vsce package
@@ -222,7 +239,7 @@ Then install the generated `.vsix` file:
 
 1. Open VS Code
 2. `Ctrl+Shift+P` / `Cmd+Shift+P` -> **Extensions: Install from VSIX...**
-3. Select the `eatingtoken-*.vsix` file
+3. Select the `eatingtoken-zh-*.vsix` file
 
 ### Prerequisites
 
@@ -248,21 +265,21 @@ All settings are under `eatingtoken.*` in VS Code settings:
 | `eatingtoken.showInStatusBar` | `true` | Show token count in the status bar |
 | `eatingtoken.statusBarFormat` | `tokens-and-cost` | Display format: `tokens-only`, `cost-only`, or `tokens-and-cost` |
 | `eatingtoken.trackCompletions` | `true` | Track inline completion acceptances |
-| `eatingtoken.yearlyTarget` | `250000` | Yearly spending target in USD |
+| `eatingtoken.yearlyTarget` | `1812500` | Yearly spending target in CNY (¥1,812,500 ≈ $250,000 at 7.25 exchange rate) |
 
 ### Supported Cost Models
 
-Since GitHub Copilot doesn't publish its internal token pricing, costs are estimated using equivalent API rates:
+Since GitHub Copilot doesn't publish its internal token pricing, costs are estimated using equivalent API rates (converted to CNY at 1 USD = 7.25 CNY):
 
 | Model | Input (per 1M tokens) | Output (per 1M tokens) |
 |-------|----------------------|----------------------|
-| gpt-4o | $2.50 | $10.00 |
-| gpt-4o-mini | $0.15 | $0.60 |
-| gpt-4.1 | $2.00 | $8.00 |
-| gpt-4 | $30.00 | $60.00 |
-| claude-opus-4.6 | $15.00 | $75.00 |
-| claude-sonnet-4 | $3.00 | $15.00 |
-| claude-sonnet-3.5 | $3.00 | $15.00 |
+| gpt-4o | ¥18.13 | ¥72.50 |
+| gpt-4o-mini | ¥1.09 | ¥4.35 |
+| gpt-4.1 | ¥14.50 | ¥58.00 |
+| gpt-4 | ¥217.50 | ¥435.00 |
+| claude-opus-4.6 | ¥108.75 | ¥543.75 |
+| claude-sonnet-4 | ¥21.75 | ¥108.75 |
+| claude-sonnet-3.5 | ¥21.75 | ¥108.75 |
 
 ## How It Works
 
@@ -309,7 +326,7 @@ To test in VS Code, press `F5` to launch the Extension Development Host.
 ## Limitations
 
 - **No direct Copilot API access**: VS Code does not expose APIs to observe another extension's inline completions or intercept Copilot Chat messages. Token counts from the Completion Tracker and Chat Tracker are heuristic estimates.
-- **Cost estimates are approximate**: Copilot's actual internal pricing is not public. The costs shown are based on equivalent OpenAI/Anthropic API pricing.
+- **Cost estimates are approximate**: Copilot's actual internal pricing is not public. The costs shown are based on equivalent OpenAI/Anthropic API pricing, converted to CNY at 7.25 exchange rate.
 - **Cross-window race conditions**: While the extension uses merge-before-write with immediate saves, there is a small theoretical window for race conditions between VS Code instances writing to globalState simultaneously.
 
 ## License
