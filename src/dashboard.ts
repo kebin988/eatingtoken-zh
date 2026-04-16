@@ -138,7 +138,7 @@ export class DashboardPanel {
 
     const panel = vscode.window.createWebviewPanel(
       'eatingtokenDashboard',
-      'Eating Token Dashboard',
+      'Eating Token 仪表盘',
       column || vscode.ViewColumn.One,
       {
         enableScripts: true,
@@ -245,7 +245,8 @@ export class DashboardPanel {
       background: var(--bg);
       color: var(--text);
       padding: 24px 32px;
-      line-height: 1.5;
+      line-height: 1.6;
+      font-size: 13px;
     }
 
     /* ── Header ── */
@@ -292,10 +293,11 @@ export class DashboardPanel {
     }
     .summary-card:hover { border-color: var(--accent); }
     .summary-card .label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
+      font-size: 12px;
       color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
       margin-bottom: 6px;
     }
     .summary-card .value {
@@ -419,11 +421,10 @@ export class DashboardPanel {
       text-align: center;
     }
     .proj-card .proj-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
+      font-size: 11px;
       color: var(--text-muted);
       margin-bottom: 4px;
+      font-weight: 500;
     }
     .proj-card .proj-value {
       font-size: 20px;
@@ -451,12 +452,11 @@ export class DashboardPanel {
     }
     .source-row + .source-row { border-top: 1px solid var(--border); }
     .badge {
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.8px;
       padding: 3px 8px;
       border-radius: 4px;
-      min-width: 76px;
+      min-width: 56px;
       text-align: center;
     }
     .badge-actual { background: rgba(16,185,129,0.15); color: var(--green); }
@@ -505,13 +505,12 @@ export class DashboardPanel {
       border-collapse: collapse;
     }
     .lang-table th {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
+      font-size: 11px;
       color: var(--text-muted);
       padding: 8px 10px;
       text-align: left;
       border-bottom: 1px solid var(--border);
+      font-weight: 500;
     }
     .lang-table td {
       font-size: 12px;
@@ -544,51 +543,51 @@ export class DashboardPanel {
 </head>
 <body>
   <div class="header">
-    <h1>Eating Token</h1>
-    <span class="version">v0.2.0</span>
+    <h1>Token 统计</h1>
+    <span class="version">v0.2.2</span>
   </div>
-  <p class="subtitle">Copilot Token Consumption Tracker</p>
+  <p class="subtitle">Copilot Token 消耗追踪器</p>
 
-  <!-- ── Summary Cards ── -->
+  <!-- ── 概览卡片 ── -->
   <div class="summary-grid">
     <div class="summary-card">
-      <div class="label">Today's Tokens</div>
+      <div class="label">今日 Token</div>
       <div class="value">${formatTokenCount(today.totalInputTokens + today.totalOutputTokens)}</div>
-      <div class="detail">In: ${formatTokenCount(today.totalInputTokens)} / Out: ${formatTokenCount(today.totalOutputTokens)}</div>
+      <div class="detail">输入: ${formatTokenCount(today.totalInputTokens)} / 输出: ${formatTokenCount(today.totalOutputTokens)}</div>
     </div>
     <div class="summary-card">
-      <div class="label">Today's Cost</div>
+      <div class="label">今日费用</div>
       <div class="value">${formatCost(today.estimatedCostUsd)}</div>
-      <div class="detail">${today.totalRequests} requests / ${today.totalAcceptances} accepted</div>
+      <div class="detail">${today.totalRequests} 次请求 / ${today.totalAcceptances} 次接受</div>
     </div>
     <div class="summary-card">
-      <div class="label">All-Time Tokens</div>
+      <div class="label">累计 Token</div>
       <div class="value">${formatTokenCount(allTime.totalInputTokens + allTime.totalOutputTokens)}</div>
-      <div class="detail">Since ${allTime.firstTrackedDate}</div>
+      <div class="detail">自 ${allTime.firstTrackedDate} 起</div>
     </div>
     <div class="summary-card">
-      <div class="label">All-Time Cost</div>
+      <div class="label">累计费用</div>
       <div class="value">${formatCost(allTime.totalCostUsd)}</div>
-      <div class="detail">Avg ${formatCost(dailyAvgCost)}/day</div>
+      <div class="detail">日均 ${formatCost(dailyAvgCost)}</div>
     </div>
   </div>
 
   <!-- ── Token & Cost Charts ── -->
   <div class="section">
     <div class="section-header">
-      <div class="section-title">Usage Over Time</div>
+      <div class="section-title">用量趋势</div>
       <div class="toggle-group">
-        <button class="toggle-btn active" data-range="week" onclick="switchRange('week')">7 Days</button>
-        <button class="toggle-btn" data-range="month" onclick="switchRange('month')">30 Days</button>
+        <button class="toggle-btn active" data-range="week" onclick="switchRange('week')">7 天</button>
+        <button class="toggle-btn" data-range="month" onclick="switchRange('month')">30 天</button>
       </div>
     </div>
     <div class="charts-grid">
       <div>
-        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;font-weight:500">Tokens</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;font-weight:500">Token 用量</div>
         <div class="chart-container"><canvas id="tokenChart"></canvas></div>
       </div>
       <div>
-        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;font-weight:500">Cost (USD)</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;font-weight:500">费用 (¥)</div>
         <div class="chart-container"><canvas id="costChart"></canvas></div>
       </div>
     </div>
@@ -597,10 +596,10 @@ export class DashboardPanel {
   <!-- ── Model Breakdown ── -->
   <div class="section">
     <div class="section-header">
-      <div class="section-title">Model Usage (Last 30 Days)</div>
+      <div class="section-title">模型用量（近 30 天）</div>
     </div>
     ${modelEntries.length === 0
-      ? '<div style="text-align:center;color:var(--text-muted);padding:24px;font-size:13px">No model data yet. Use Copilot Chat or Agent mode to see model breakdown.</div>'
+      ? '<div style="text-align:center;color:var(--text-muted);padding:24px;font-size:13px">暂无模型数据。使用 Copilot Chat 或 Agent 模式后即可查看模型分布。</div>'
       : `<div class="model-grid">
       <div class="model-chart-container"><canvas id="modelTokenChart"></canvas></div>
       <div class="model-legend">
@@ -610,7 +609,7 @@ export class DashboardPanel {
             <div class="model-dot" style="background:${getModelColor(model)}"></div>
             <div>
               <div class="model-name">${model}</div>
-              <div class="model-stat">${formatTokenCount(total)} tokens &middot; ${formatCost(data.costUsd)}</div>
+              <div class="model-stat">${formatTokenCount(total)} 个 Token &middot; ${formatCost(data.costUsd)}</div>
             </div>
           </div>`;
         }).join('')}
@@ -622,26 +621,26 @@ export class DashboardPanel {
   <!-- ── Cost Projections ── -->
   <div class="section">
     <div class="section-header">
-      <div class="section-title">Jensen's $${(yearlyTarget / 1000).toFixed(0)}K Benchmark</div>
+      <div class="section-title">黄仁勋 ¥${(yearlyTarget / 10000).toFixed(0)}万 基准</div>
     </div>
     <div class="jensen-bar-bg">
       <div class="jensen-bar-fill" style="width:${jensenProgress.toFixed(1)}%">${jensenProgress.toFixed(1)}%</div>
     </div>
     <div class="jensen-meta">
-      <span>Projected yearly: ${formatCost(projectedYearlyCost)}</span>
-      <span>Target: ${formatCost(yearlyTarget)}</span>
+      <span>年度预测: ${formatCost(projectedYearlyCost)}</span>
+      <span>目标: ${formatCost(yearlyTarget)}</span>
     </div>
     <div class="projection-grid">
       <div class="proj-card">
-        <div class="proj-label">Weekly Burn Rate</div>
+        <div class="proj-label">周消费率</div>
         <div class="proj-value">${formatCost(thisWeekCost)}${costTrend !== 0 ? `<span class="trend-badge ${costTrend > 0 ? 'up' : 'down'}">${costTrend > 0 ? '+' : ''}${costTrend.toFixed(0)}%</span>` : ''}</div>
       </div>
       <div class="proj-card">
-        <div class="proj-label">Projected Monthly</div>
+        <div class="proj-label">月度预测</div>
         <div class="proj-value">${formatCost(dailyAvgCost * 30)}</div>
       </div>
       <div class="proj-card">
-        <div class="proj-label">Projected Yearly</div>
+        <div class="proj-label">年度预测</div>
         <div class="proj-value">${formatCost(projectedYearlyCost)}</div>
       </div>
     </div>
@@ -650,27 +649,27 @@ export class DashboardPanel {
   <!-- ── Data Sources ── -->
   <div class="section">
     <div class="section-header">
-      <div class="section-title">Data Sources (Last 30 Days)</div>
+      <div class="section-title">数据源（近 30 天）</div>
     </div>
     <div class="source-row">
-      <div class="badge badge-actual">ACTUAL</div>
+      <div class="badge badge-actual">实际值</div>
       <div class="source-info">
-        <div class="name">Copilot Agent Sessions</div>
-        <div class="meta">${formatTokenCount(actualTokens)} tokens &middot; ${agentData.requests + agentData.acceptances} events</div>
+        <div class="name">Copilot Agent 会话</div>
+        <div class="meta">${formatTokenCount(actualTokens)} 个 Token &middot; ${agentData.requests + agentData.acceptances} 个事件</div>
       </div>
     </div>
     <div class="source-row">
-      <div class="badge badge-estimated">ESTIMATED</div>
+      <div class="badge badge-estimated">估算值</div>
       <div class="source-info">
-        <div class="name">Copilot Chat Logs</div>
-        <div class="meta">${formatTokenCount(estimatedTokens)} tokens &middot; ${chatData.requests + chatData.acceptances} events</div>
+        <div class="name">Copilot Chat 日志</div>
+        <div class="meta">${formatTokenCount(estimatedTokens)} 个 Token &middot; ${chatData.requests + chatData.acceptances} 个事件</div>
       </div>
     </div>
     <div class="source-row">
-      <div class="badge badge-heuristic">HEURISTIC</div>
+      <div class="badge badge-heuristic">启发式</div>
       <div class="source-info">
-        <div class="name">Inline Completions &amp; Chat Edits</div>
-        <div class="meta">${formatTokenCount(heuristicTokens)} tokens &middot; ${topLanguages.reduce((sum, [, d]) => sum + d.requests + d.acceptances, 0)} events</div>
+        <div class="name">内联补全 &amp; Chat 编辑</div>
+        <div class="meta">${formatTokenCount(heuristicTokens)} 个 Token &middot; ${topLanguages.reduce((sum, [, d]) => sum + d.requests + d.acceptances, 0)} 个事件</div>
       </div>
     </div>
   </div>
@@ -678,15 +677,15 @@ export class DashboardPanel {
   <!-- ── Language Breakdown ── -->
   <div class="section">
     <div class="section-header">
-      <div class="section-title">Language Breakdown (Last 30 Days)</div>
+      <div class="section-title">语言分布（近 30 天）</div>
     </div>
     <table class="lang-table">
       <thead>
-        <tr><th>Language</th><th>Requests</th><th>Accepted</th><th>Tokens</th><th style="width:25%">Usage</th></tr>
+        <tr><th>语言</th><th>请求</th><th>接受</th><th>Token</th><th style="width:25%">用量</th></tr>
       </thead>
       <tbody>
         ${topLanguages.length === 0
-          ? '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:16px">No language data yet</td></tr>'
+          ? '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:16px">暂无语言数据</td></tr>'
           : topLanguages.map(([lang, data]) => {
               const total = data.inputTokens + data.outputTokens;
               const maxT = topLanguages[0] ? topLanguages[0][1].inputTokens + topLanguages[0][1].outputTokens : 1;
@@ -707,19 +706,19 @@ export class DashboardPanel {
   <!-- ── Bottom Stats ── -->
   <div class="stats-grid">
     <div class="summary-card">
-      <div class="label">Acceptance Rate</div>
+      <div class="label">接受率</div>
       <div class="value">${allTime.totalRequests > 0 ? ((allTime.totalAcceptances / allTime.totalRequests) * 100).toFixed(1) : '0'}%</div>
-      <div class="detail">${allTime.totalAcceptances} of ${allTime.totalRequests} suggestions</div>
+      <div class="detail">${allTime.totalAcceptances} / ${allTime.totalRequests} 次建议</div>
     </div>
     <div class="summary-card">
-      <div class="label">Days Tracked</div>
+      <div class="label">追踪天数</div>
       <div class="value">${daysSinceStart}</div>
-      <div class="detail">Since ${allTime.firstTrackedDate}</div>
+      <div class="detail">自 ${allTime.firstTrackedDate} 起</div>
     </div>
     <div class="summary-card">
-      <div class="label">Avg Tokens/Day</div>
+      <div class="label">日均 Token</div>
       <div class="value">${formatTokenCount(Math.round((allTime.totalInputTokens + allTime.totalOutputTokens) / daysSinceStart))}</div>
-      <div class="detail">Input + Output combined</div>
+      <div class="detail">输入 + 输出合计</div>
     </div>
   </div>
 
@@ -743,13 +742,13 @@ export class DashboardPanel {
       data: {
         labels: DATA.weekLabels,
         datasets: [{
-          label: 'Input',
+          label: '输入',
           data: DATA.weekInputTokens,
           backgroundColor: 'rgba(59,130,246,0.7)',
           borderRadius: 3,
           borderSkipped: false,
         }, {
-          label: 'Output',
+          label: '输出',
           data: DATA.weekOutputTokens,
           backgroundColor: 'rgba(249,115,22,0.7)',
           borderRadius: 3,
@@ -769,7 +768,7 @@ export class DashboardPanel {
             cornerRadius: 6,
             callbacks: {
               label: function(ctx) {
-                return ctx.dataset.label + ': ' + Number(ctx.raw).toLocaleString() + ' tokens';
+                return ctx.dataset.label + ': ' + Number(ctx.raw).toLocaleString() + ' 个 Token';
               }
             }
           }
@@ -794,7 +793,7 @@ export class DashboardPanel {
       data: {
         labels: DATA.weekLabels,
         datasets: [{
-          label: 'Cost',
+          label: '费用',
           data: DATA.weekCosts,
           borderColor: 'rgba(16,185,129,0.9)',
           backgroundColor: 'rgba(16,185,129,0.1)',
@@ -818,7 +817,7 @@ export class DashboardPanel {
             cornerRadius: 6,
             callbacks: {
               label: function(ctx) {
-                return '$' + Number(ctx.raw).toFixed(4);
+                return '¥' + Number(ctx.raw).toFixed(4);
               }
             }
           }
@@ -826,7 +825,7 @@ export class DashboardPanel {
         scales: {
           x: { grid: { display: false } },
           y: { grid: { color: gridColor }, ticks: {
-            callback: function(v) { return '$' + Number(v).toFixed(4); }
+            callback: function(v) { return '¥' + Number(v).toFixed(4); }
           }}
         }
       }
@@ -861,7 +860,7 @@ export class DashboardPanel {
                 label: function(ctx) {
                   const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
                   const pct = ((ctx.raw / total) * 100).toFixed(1);
-                  return ctx.label + ': ' + Number(ctx.raw).toLocaleString() + ' tokens (' + pct + '%)';
+                  return ctx.label + ': ' + Number(ctx.raw).toLocaleString() + ' 个 Token (' + pct + '%)';
                 }
               }
             }
@@ -988,27 +987,27 @@ export class DashboardViewProvider implements vscode.WebviewViewProvider {
 </style>
 </head><body>
   <div class="stat">
-    <div class="stat-label">Today</div>
-    <div class="stat-value">${formatTokenCount(today.totalInputTokens + today.totalOutputTokens)} tokens</div>
-    <div class="stat-detail">${formatCost(today.estimatedCostUsd)} estimated</div>
+    <div class="stat-label">今日</div>
+    <div class="stat-value">${formatTokenCount(today.totalInputTokens + today.totalOutputTokens)} 个 Token</div>
+    <div class="stat-detail">预估 ${formatCost(today.estimatedCostUsd)}</div>
   </div>
   <div class="divider"></div>
   <div class="stat">
-    <div class="stat-label">All Time</div>
+    <div class="stat-label">累计</div>
     <div class="stat-value">${formatCost(allTime.totalCostUsd)}</div>
-    <div class="stat-detail">${formatTokenCount(allTime.totalInputTokens + allTime.totalOutputTokens)} tokens over ${daysSinceStart} days</div>
+    <div class="stat-detail">${formatTokenCount(allTime.totalInputTokens + allTime.totalOutputTokens)} 个 Token，已追踪 ${daysSinceStart} 天</div>
   </div>
   <div class="divider"></div>
   <div class="stat">
-    <div class="stat-label">Jensen's $${(yearlyTarget / 1000).toFixed(0)}K Target</div>
+    <div class="stat-label">黄仁勋 ¥${(yearlyTarget / 10000).toFixed(0)}万 目标</div>
     <div class="progress-bg"><div class="progress-fill" style="width:${progress.toFixed(1)}%"></div></div>
-    <div class="stat-detail">${formatCost(projectedYearly)}/year projected (${progress.toFixed(1)}%)</div>
+    <div class="stat-detail">年度预测 ${formatCost(projectedYearly)} (${progress.toFixed(1)}%)</div>
   </div>
   <div class="divider"></div>
   <div class="stat">
-    <div class="stat-label">Acceptance Rate</div>
+    <div class="stat-label">接受率</div>
     <div class="stat-value">${allTime.totalRequests > 0 ? ((allTime.totalAcceptances / allTime.totalRequests) * 100).toFixed(1) : '0'}%</div>
-    <div class="stat-detail">${allTime.totalAcceptances}/${allTime.totalRequests} suggestions</div>
+    <div class="stat-detail">${allTime.totalAcceptances}/${allTime.totalRequests} 次建议</div>
   </div>
 </body></html>`;
     }
@@ -1021,7 +1020,7 @@ export class DashboardViewProvider implements vscode.WebviewViewProvider {
   body { font-family: var(--vscode-font-family); color: var(--vscode-foreground); padding: 12px; text-align: center; opacity: 0.6; }
 </style>
 </head><body>
-  <p>Start coding with Copilot to see your token consumption.</p>
+  <p>开始使用 Copilot 编程即可查看 Token 消耗。</p>
 </body></html>`;
   }
 }

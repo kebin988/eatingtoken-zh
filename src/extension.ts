@@ -210,9 +210,9 @@ export function activate(context: vscode.ExtensionContext) {
     await usageStorage.recordAcceptance(event.language, event.estimatedOutputTokens, outputCost.totalCost);
 
     const fileCount = event.files.length;
-    const typeLabel = event.type === 'chat-file-create' ? 'Chat file creation' :
-                      event.type === 'chat-bulk-edit' ? `Chat bulk edit (${fileCount} files)` :
-                      'Chat edit';
+    const typeLabel = event.type === 'chat-file-create' ? 'Chat 新建文件' :
+                      event.type === 'chat-bulk-edit' ? `Chat 批量编辑 (${fileCount} 个文件)` :
+                      'Chat 编辑';
     console.log(`Eating Token: ${typeLabel} detected - ~${event.estimatedOutputTokens} output tokens, ${event.linesChanged} lines`);
     refreshDashboard();
   });
@@ -319,29 +319,29 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('eatingtoken.resetSession', async () => {
       const answer = await vscode.window.showWarningMessage(
-        'Reset session stats? This only resets the status bar counter, not historical data.',
-        'Reset Session',
-        'Reset All Data',
-        'Cancel'
+        '重置会话统计？这只会重置状态栏计数器，不影响历史数据。',
+        '重置会话',
+        '重置所有数据',
+        '取消'
       );
 
-      if (answer === 'Reset Session') {
+      if (answer === '重置会话') {
         statusBar.resetSession();
         completionTracker.resetStats();
         chatTracker.resetStats();
-        vscode.window.showInformationMessage('Session stats reset.');
-      } else if (answer === 'Reset All Data') {
+        vscode.window.showInformationMessage('会话统计已重置。');
+      } else if (answer === '重置所有数据') {
         const confirm = await vscode.window.showWarningMessage(
-          'This will permanently delete ALL historical usage data. Are you sure?',
-          'Delete All',
-          'Cancel'
+          '这将永久删除所有历史使用数据。确定吗？',
+          '全部删除',
+          '取消'
         );
-        if (confirm === 'Delete All') {
+        if (confirm === '全部删除') {
           await usageStorage.resetAll();
           statusBar.resetSession();
           completionTracker.resetStats();
           chatTracker.resetStats();
-          vscode.window.showInformationMessage('All usage data cleared.');
+          vscode.window.showInformationMessage('所有使用数据已清除。');
         }
       }
     })
@@ -355,7 +355,7 @@ export function activate(context: vscode.ExtensionContext) {
         language: 'json',
       });
       await vscode.window.showTextDocument(doc);
-      vscode.window.showInformationMessage('Usage data exported. Save the file to keep it.');
+      vscode.window.showInformationMessage('使用数据已导出。保存文件以保留数据。');
     })
   );
 

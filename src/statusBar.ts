@@ -19,7 +19,7 @@ export class StatusBarManager implements vscode.Disposable {
       50
     );
     this.statusBarItem.command = 'eatingtoken.showDashboard';
-    this.statusBarItem.tooltip = 'Click to open Eating Token dashboard';
+    this.statusBarItem.tooltip = '点击打开 Token 仪表盘';
     this.updateDisplay();
     this.statusBarItem.show();
   }
@@ -48,7 +48,7 @@ export class StatusBarManager implements vscode.Disposable {
 
     switch (this.format) {
       case 'tokens-only':
-        this.statusBarItem.text = `$(flame) ${tokensStr} tokens`;
+        this.statusBarItem.text = `$(flame) ${tokensStr} 个 Token`;
         break;
       case 'cost-only':
         this.statusBarItem.text = `$(flame) ${costStr}`;
@@ -60,12 +60,12 @@ export class StatusBarManager implements vscode.Disposable {
     }
 
     this.statusBarItem.tooltip = [
-      'Eating Token - Copilot Usage Tracker',
-      `Session Input: ${formatTokenCount(this.sessionInputTokens)} tokens`,
-      `Session Output: ${formatTokenCount(this.sessionOutputTokens)} tokens`,
-      `Estimated Cost: ${costStr}`,
+      'Eating Token - Copilot 用量追踪',
+      `会话输入: ${formatTokenCount(this.sessionInputTokens)} 个 Token`,
+      `会话输出: ${formatTokenCount(this.sessionOutputTokens)} 个 Token`,
+      `预估费用: ${costStr}`,
       '',
-      'Click to open dashboard',
+      '点击打开仪表盘',
     ].join('\n');
   }
 

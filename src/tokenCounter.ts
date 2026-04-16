@@ -5,21 +5,24 @@
 
 import { countTokens as gptCountTokens } from 'gpt-tokenizer/model/gpt-4o';
 
-/** Pricing per 1M tokens in USD */
+/** 每百万 Token 定价（人民币/元，按 1 USD = 7.25 CNY 换算） */
 export interface ModelPricing {
   inputPerMillion: number;
   outputPerMillion: number;
 }
 
-/** Available cost models and their pricing */
+/** 汇率常量：USD → CNY */
+const USD_TO_CNY = 7.25;
+
+/** 可用费用模型及其定价（人民币） */
 export const MODEL_PRICING: Record<string, ModelPricing> = {
-  'gpt-4o': { inputPerMillion: 2.50, outputPerMillion: 10.00 },
-  'gpt-4o-mini': { inputPerMillion: 0.15, outputPerMillion: 0.60 },
-  'gpt-4.1': { inputPerMillion: 2.00, outputPerMillion: 8.00 },
-  'gpt-4': { inputPerMillion: 30.00, outputPerMillion: 60.00 },
-  'claude-opus-4.6': { inputPerMillion: 15.00, outputPerMillion: 75.00 },
-  'claude-sonnet-4': { inputPerMillion: 3.00, outputPerMillion: 15.00 },
-  'claude-sonnet-3.5': { inputPerMillion: 3.00, outputPerMillion: 15.00 },
+  'gpt-4o': { inputPerMillion: 2.50 * USD_TO_CNY, outputPerMillion: 10.00 * USD_TO_CNY },
+  'gpt-4o-mini': { inputPerMillion: 0.15 * USD_TO_CNY, outputPerMillion: 0.60 * USD_TO_CNY },
+  'gpt-4.1': { inputPerMillion: 2.00 * USD_TO_CNY, outputPerMillion: 8.00 * USD_TO_CNY },
+  'gpt-4': { inputPerMillion: 30.00 * USD_TO_CNY, outputPerMillion: 60.00 * USD_TO_CNY },
+  'claude-opus-4.6': { inputPerMillion: 15.00 * USD_TO_CNY, outputPerMillion: 75.00 * USD_TO_CNY },
+  'claude-sonnet-4': { inputPerMillion: 3.00 * USD_TO_CNY, outputPerMillion: 15.00 * USD_TO_CNY },
+  'claude-sonnet-3.5': { inputPerMillion: 3.00 * USD_TO_CNY, outputPerMillion: 15.00 * USD_TO_CNY },
 };
 
 /**
@@ -46,17 +49,20 @@ export function resolveModelPricing(modelName: string): string {
 }
 
 /**
- * Count tokens in a text string using the o200k_base encoding.
- * This is the encoding used by GPT-4o, GPT-4.1, and GPT-5.x models.
+ * 计算文本的 Token 数量。
+ * 短文本使用 o200k_base 编码精确计算，超过 10000 字符时用近似公式避免超时。
  */
 export function countTokens(text: string): number {
   if (!text || text.length === 0) {
     return 0;
   }
+  // 超过 10000 字符时直接用近似公式，避免 tokenizer 超时
+  if (text.length > 10_000) {
+    return Math.ceil(text.length / 4);
+  }
   try {
     return gptCountTokens(text);
   } catch {
-    // Fallback: ~4 chars per token heuristic
     return Math.ceil(text.length / 4);
   }
 }
@@ -93,14 +99,14 @@ export function formatTokenCount(tokens: number): string {
 }
 
 /**
- * Format a cost for display (e.g., 0.0023 -> "$0.002", 1.50 -> "$1.50")
+ * 格式化费用显示（人民币）
  */
 export function formatCost(cost: number): string {
   if (cost < 0.01) {
-    return `$${cost.toFixed(4)}`;
+    return `¥${cost.toFixed(4)}`;
   }
   if (cost < 1) {
-    return `$${cost.toFixed(3)}`;
+    return `¥${cost.toFixed(3)}`;
   }
-  return `$${cost.toFixed(2)}`;
+  return `¥${cost.toFixed(2)}`;
 }

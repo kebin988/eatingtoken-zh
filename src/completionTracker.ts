@@ -117,9 +117,13 @@ export class CompletionTracker implements vscode.Disposable {
     this.lastRequestFile = document.uri.toString();
     this.pendingCompletionRequest = true;
 
-    // Estimate input tokens: current file content * context multiplier
-    const fileText = document.getText();
-    const rawTokens = countTokens(fileText);
+    // Estimate input tokens: use cursor context window instead of entire file
+    // Copilot typically sends ~200 lines around cursor + file metadata
+    const startLine = Math.max(0, position.line - 100);
+    const endLine = Math.min(document.lineCount - 1, position.line + 100);
+    const contextRange = new vscode.Range(startLine, 0, endLine, document.lineAt(endLine).text.length);
+    const contextText = document.getText(contextRange);
+    const rawTokens = countTokens(contextText);
     const estimatedInputTokens = Math.ceil(rawTokens * this.contextMultiplier);
 
     const event: CompletionEvent = {
