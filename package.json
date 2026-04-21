@@ -3,7 +3,7 @@
   "displayName": "Token 统计 - Copilot Token 追踪器",
   "description": "实时追踪 GitHub Copilot 的 Token 消耗量和预估费用。清楚知道你吃了多少 Token。",
   "version": "0.2.2",
-  "publisher": "manishsatwani",
+  "publisher": "kebin988",
   "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"
@@ -27,7 +27,7 @@
   "icon": "images/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/manishsat/eatingtoken"
+    "url": "https://github.com/kebin988/eatingtoken-zh"
   },
   "contributes": {
     "commands": [
